@@ -34,7 +34,8 @@ app.notFound((c) => c.json({ message: 'Not Found', ok: false }, 404))
 app.post('/api/chat', async (c) => {
 
 	const payload = await c.req.json();
-	const messages = payload.messages || [];
+
+	const messages = (typeof payload.messages === 'string' ? JSON.parse(payload.messages) : payload.messages) || [];
 
 	const creds = getCreds();
 
@@ -115,7 +116,6 @@ app.post('/api/chat', async (c) => {
 
 	}
 
-	console.log(messages)
 	return c.json({ messages });
 });
 
